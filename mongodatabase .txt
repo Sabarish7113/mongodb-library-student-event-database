@@ -1,0 +1,123 @@
+library database 
+
+db.books.insertMany([{title:"the world",name:"shakesphere",availablity:true,status:true},{title:"beauty",name:"shakesphere",availablity:true,status:false},{title:"one piece",name:"Erochi oda",availablity:false,status:true},{title:"physics",name:"Newton",availablity:true,status:true}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('66c3258bd3c36f45592710bc'),
+    '1': ObjectId('66c3258bd3c36f45592710bd'),
+    '2': ObjectId('66c3258bd3c36f45592710be'),
+    '3': ObjectId('66c3258bd3c36f45592710bf')
+  }
+}
+library> db.books.find()
+[
+  {
+    _id: ObjectId('66c3258bd3c36f45592710bc'),
+    title: 'the world',
+    name: 'shakesphere',
+    availablity: true,
+    status: true
+  },
+  {
+    _id: ObjectId('66c3258bd3c36f45592710bd'),
+    title: 'beauty',
+    name: 'shakesphere',
+    availablity: true,
+    status: false
+  },
+  {
+    _id: ObjectId('66c3258bd3c36f45592710be'),
+    title: 'one piece',
+    name: 'Erochi oda',
+    availablity: false,
+    status: true
+  },
+  {
+    _id: ObjectId('66c3258bd3c36f45592710bf'),
+    title: 'physics',
+    name: 'Newton',
+    availablity: true,
+    status: true
+  }
+]
+
+ db.books.aggregate( [ { $group:{ _id:"$no", totalno:{ $first:"$title" } } } ] )
+[ { _id: null, totalno: 'the world' } ]
+library> db.books.aggregate( [ { $group:{ _id:"$no", totalno:{ $last:"$title" } } } ] )
+[ { _id: null, totalno: 'physics' } ]
+
+ db.books.aggregate([{ $count:"title" }])
+[ { title: 4 } ]
+library> db.books.aggregate([{ $count:"title" }])
+[ { title: 4 } ]
+library> db.books.aggregate([{ $count:"title" }])
+[ { title: 4 } ]
+library> db.books.aggregate([{ $count:"title" }])
+[ { title: 4 } ]
+library> db.books.aggregate([{ $count:"name" }])
+[ { name: 4 } ]
+
+Students database
+
+use student
+switched to db student
+student> db.student.insertMany([{name:"logesh",cls:"12th",age:18,current:true,percentage:85},{name:"sabarish",cls:"12th",age:18,current:true,percentage:99},{name:"ashwin",cls:"12th",age:18,current:false,percentage:90}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('66c32a17d3c36f45592710c0'),
+    '1': ObjectId('66c32a17d3c36f45592710c1'),
+    '2': ObjectId('66c32a17d3c36f45592710c2')
+  }
+}
+
+db.student.find()
+[
+  {
+    _id: ObjectId('66c32a17d3c36f45592710c0'),
+    name: 'logesh',
+    cls: '12th',
+    age: 18,
+    current: true,
+    percentage: 85
+  },
+  {
+    _id: ObjectId('66c32a17d3c36f45592710c1'),
+    name: 'sabarish',
+    cls: '12th',
+    age: 18,
+    current: true,
+    percentage: 99
+  },
+  {
+    _id: ObjectId('66c32a17d3c36f45592710c2'),
+    name: 'ashwin',
+    cls: '12th',
+    age: 18,
+    current: false,
+    percentage: 90
+  }
+]
+
+ db.student.aggregate( [ { $group:{ _id:"name", totalno:{ $max:"$percentage" } } } ] )
+[ { _id: 'name', totalno: 99 } ]
+student> db.student.aggregate( [ { $group:{ _id:"name", totalno:{ $min:"$percentage" } } } ] )
+[ { _id: 'name', totalno: 85 } ]
+student> db.student.aggregate( [ { $group:{ _id:"name", totalno:{ $sum:"$percentage" } } } ] )
+[ { _id: 'name', totalno: 274 } ]
+student> db.student.aggregate( [ { $group:{ _id:"name", totalno:{ $avg:"$percentage" } } } ] )
+[ { _id: 'name', totalno: 91.33333333333333 } ]
+student> db.student.aggregate([{ $count:"name" }])
+[ { name: 3 } ]
+student> db.student.aggregate( [ { $group:{ _id:"name", totalno:{ $first:"$percentage" } } } ] )
+[ { _id: 'name', totalno: 85 } ]
+student> db.student.aggregate( [ { $group:{ _id:"name", totalno:{ $last:"$percentage" } } } ] )
+[ { _id: 'name', totalno: 90 } ]
+
+
+use eventManagement; db.events.insertMany([{ "event_id": 1, "event_name": "Tech Conference", "date": new Date("2024-09-15"), "location": "New York", "attendees": 300 }, { "event_id": 2, "event_name": "Music Festival", "date": new Date("2024-10-05"), "location": "Los Angeles", "attendees": 500 }, { "event_id": 3, "event_name": "Art Exhibition", "date": new Date("2024-08-25"), "location": "San Francisco", "attendees": 150 }]);
+
+db.events.find({ "date": { $gt: new Date() } });
+
+db.events.aggregate([{ $group: { _id: "$location", eventCount: { $sum: 1 } } }]);
